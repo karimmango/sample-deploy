@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Deliver') {
       steps {
-        sh 'scp ./sample vagrant@10.10.50.3'
+        sh 'scp ./sample vagrant@10.10.50.3:'
       }
     }
 
