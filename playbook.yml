@@ -1,0 +1,13 @@
+- hosts: target
+  tasks:
+    - name: create simple service template
+      become: true
+      template:
+        src: sample.service.j2
+        dest: /etc/systemd/system/sample.service
+
+    - name: run sample service
+      become: true
+      ansible.builtin.systemd:
+        state: started
+        name: sample
