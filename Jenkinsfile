@@ -5,7 +5,7 @@ pipeline {
     stage('Copy artifact') {
       steps {
         copyArtifacts filter: 'sample', fingerprintArtifacts: true,
-          projectName: 'sample-multibranch/mathias', selector: lastSuccessful()
+          projectName: 'sample', selector: lastSuccessful()
       }
     }
     stage('Deliver') {
