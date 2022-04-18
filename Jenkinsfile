@@ -19,6 +19,10 @@ pipeline {
         // }
       }
     }
-
+    stage('Test deployment with Newman') {
+      steps {
+        sh 'docker run -t postman/newman run https://www.getpostman.com/collections/ceccdf2a6442a8752f54'
+      }
+    }
   }
 }
