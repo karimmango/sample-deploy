@@ -3,14 +3,19 @@ pipeline {
 
   parameters {
     choice choices: ['qa', 'production','staging'], description: 'Select environment for deployment', name: 'DEPLOY_TO'
+    string(name: 'upstreamJobName',
+          defaultValue: 'main',
+          description: 'The name of the job the triggering upstream build'
+    )
   }
+
 
 
   stages {
     stage('Copy artifact') {
       steps {
         copyArtifacts filter: 'sample', fingerprintArtifacts: true,
-          projectName: 'sample', selector: lastSuccessful()
+          projectName: 'sample-multibranch/${params.upstreamJobName}', selector: BUILD_SELECTOR
       }
     }
     stage('Deliver') {
