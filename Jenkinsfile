@@ -1,6 +1,11 @@
 pipeline {
   agent any
 
+  parameters {
+    choice choices: ['qa', 'production'], description: 'Select environment for deployment', name: 'DEPLOY_TO'
+  }
+
+
   stages {
     stage('Copy artifact') {
       steps {
@@ -11,7 +16,7 @@ pipeline {
     stage('Deliver') {
       steps {
         sshagent(['vagrant-private-key']) {
-          sh 'ansible-playbook --private-key=${keyfile} -i hosts.ini playbook.yml'
+          sh 'ansible-playbook --private-key=${keyfile} -i ${DEPLOY_TO}.ini playbook.yml'
         }
         // withCredentials([sshUserPrivateKey(credentialsId: "vagrant-private-key", keyFileVariable: 'keyfile')]) {
         //   sh 'ansible-playbook --private-key=${keyfile} -i hosts.ini playbook.yml'
