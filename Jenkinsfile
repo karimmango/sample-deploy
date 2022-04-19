@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   parameters {
-    choice choices: ['qa', 'production'], description: 'Select environment for deployment', name: 'DEPLOY_TO'
+    choice choices: ['qa', 'production','staging'], description: 'Select environment for deployment', name: 'DEPLOY_TO'
   }
 
 
@@ -16,7 +16,7 @@ pipeline {
     stage('Deliver') {
       steps {
         sshagent(['vagrant-private-key']) {
-          sh 'ansible-playbook --private-key=${keyfile} -i ${DEPLOY_TO}.ini playbook.yml'
+          sh 'ansible-playbook -i ${DEPLOY_TO}.ini playbook.yml'
         }
         // withCredentials([sshUserPrivateKey(credentialsId: "vagrant-private-key", keyFileVariable: 'keyfile')]) {
         //   sh 'ansible-playbook --private-key=${keyfile} -i hosts.ini playbook.yml'
